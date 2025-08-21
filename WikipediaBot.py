@@ -17,10 +17,10 @@ logger = logging.getLogger(__name__)
 TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = int(os.getenv("DB_PORT", 5432))
-DB_NAME = os.getenv("DB_NAME", "weatherbot_db")
-DB_USER = os.getenv("DB_USER", "weatherbot")
+DB_NAME = os.getenv("DB_NAME", "wikibot_db")
+DB_USER = os.getenv("DB_USER", "wikibot")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "")
-WIKI_USER_AGENT = os.getenv("WIKI_USER_AGENT", "WikiBot/1.0 (contact: your_email@example.com)")
+WIKI_USER_AGENT = os.getenv("WIKI_USER_AGENT", "WikiBot/1.0")
 
 TEXTS = {
     "ru": {
@@ -49,30 +49,6 @@ DB_KW = {
     "password": DB_PASSWORD,
     "options": "-c client_encoding=UTF8",
 }
-
-CREATE_SQL = """
-CREATE TABLE IF NOT EXISTS user_interactions (
-  id SERIAL PRIMARY KEY,
-  user_id BIGINT NOT NULL,
-  username TEXT,
-  query_text TEXT,
-  response_text TEXT,
-  language VARCHAR(10),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
-);
-"""
-
-def ensure_table():
-    try:
-        conn = psycopg2.connect(**DB_KW)
-        conn.set_client_encoding("UTF8")
-        with conn:
-            with conn.cursor() as cur:
-                cur.execute(CREATE_SQL)
-        conn.close()
-    except Exception as e:
-        logger.exception("DB init failed: %r", e)
-        # don't crash—bot can run even if DB not available
 
 def _log_sync(user_id, username, q, resp, lang):
     try:
@@ -177,7 +153,6 @@ def main():
     if not TG_BOT_TOKEN:
         logger.error("TG_BOT_TOKEN not set")
         return
-    ensure_table()
     app = Application.builder().token(TG_BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_cmd))
