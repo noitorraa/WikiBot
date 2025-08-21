@@ -20,7 +20,7 @@ DB_PORT = int(os.getenv("DB_PORT", 5432))
 DB_NAME = os.getenv("DB_NAME", "weatherbot_db")
 DB_USER = os.getenv("DB_USER", "weatherbot")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "")
-WIKI_USER_AGENT = os.getenv("WIKI_USER_AGENT", "WeatherBot/1.0 (contact: your_email@example.com)")
+WIKI_USER_AGENT = os.getenv("WIKI_USER_AGENT", "WikiBot/1.0 (contact: your_email@example.com)")
 
 TEXTS = {
     "ru": {
