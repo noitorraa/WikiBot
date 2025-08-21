@@ -38,9 +38,14 @@ DB_NAME=wikibot_db
 DB_USER=wikibot
 DB_PASSWORD=your_password
 
+## 3.5 Настройка PostgreSQL
+- Разрешите удаленные подключения в `pg_hba.conf`
+- Убедитесь, что `listen_addresses = '*'` в `postgresql.conf`
+- Откройте порт 5432 в брандмауэре
+
 ## 4. Запуск бота
 
-После настройки базы данных запустите бота:
+После настройки базы данных запустите бота (прежде убедитесь в том, что docker запущен):
 
 ```bash
 docker-compose up -d
